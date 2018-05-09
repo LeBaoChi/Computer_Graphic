@@ -11,8 +11,9 @@ public class Cube : MonoBehaviour {
 	private float m_TransitionIn;
 	private float m_TransitionOut;
 	private float m_QuarterNote;
-	public AudioSource run;
+//	public AudioSource run;
 	public GameObject scoreObject;
+	public GameObject scoreObjectFinal;
 	int score=0;
 	int positionNewPlane = -2000;
 	int nextPlanePositionX = -4000;
@@ -26,24 +27,25 @@ public class Cube : MonoBehaviour {
 	float moveSpeed = 600f;// tốc độ theo chiều doc
 	float runSpeed = 1000f; // tốc độ theo chiều ngang
 	float jumpHeight = 120f;
-	public GameObject player;
+	GameObject player;
 	public ParticleSystem  vang;
 	public ParticleSystem red1;
 	float baseSpeed = 1000f;
+	public GameObject finalScore;
 	void Start () {
 		
 		//effect = GetComponent<ParticleSystem> ();
 	//	print (effect);	
 //		effect.Play ();
-
+		finalScore.SetActive(false);
 		//m_QuarterNote = 60 / bpm;
 		//m_TransitionIn = m_QuarterNote;
 		//m_TransitionOut = m_QuarterNote * 32;
+		 
 		player = GameObject.Find("Cube");
 		sources = GameObject.FindSceneObjectsOfType(typeof(AudioSource)) as AudioSource[];
-		print (sources.Length);
 		playerColor = player.GetComponent<Renderer> ().material.color;
-
+		print (sources [0]);
 	}
 
 	// Update is called once per frame
@@ -174,7 +176,10 @@ public class Cube : MonoBehaviour {
 			Destroy(collision.gameObject);
 			score+=5;
 			scoreObject.GetComponent<Text> ().text = score.ToString();
+			sources [0].Play ();
 		}  else {
+			scoreObjectFinal.GetComponent<Text> ().text = score.ToString();	
+			finalScore.SetActive(true	);
 			sources [1].Play ();
 			print ("dead");
 			moveSpeed = 0;
